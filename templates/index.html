@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Question Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (Roboto for professional typography) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Roboto', sans-serif;
+            color: #2c3e50;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        .container-fluid {
+            padding: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .left-panel {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+        }
+        .right-panel {
+            flex: 2;
+            min-width: 300px;
+        }
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border-top: 4px solid #003087;
+        }
+        .chat-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid #003087;
+        }
+        .chat-header {
+            background: #003087;
+            color: white;
+            padding: 12px;
+            border-radius: 10px 10px 0 0;
+            margin: -20px -20px 20px -20px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 1.2rem;
+        }
+        .bot-message {
+            background: #f1f3f5;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin: 10px 0;
+            max-width: 90%;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+            color: #2c3e50;
+        }
+        .bot-message.bot-typing {
+            background: #e6f0ff;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+        }
+        .typing-dots::after {
+            content: '';
+            animation: dots 1.2s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
+        .btn-primary {
+            background-color: #003087;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            padding: 12px;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #00205b;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .required::after {
+            content: '*';
+            color: #dc3545;
+            margin-left: 4px;
+        }
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 1px solid #ced4da;
+            background: white;
+            color: #2c3e50;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #003087;
+            box-shadow: 0 0 5px rgba(0, 48, 135, 0.3);
+            background: white;
+            color: #2c3e50;
+        }
+        .form-control::file-selector-button {
+            background: #003087;
+            border: none;
+            border-radius: 8px;
+            color: white;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: none;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .header p {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="left-panel">
+            <div class="header">
+                <h1>Question Generator</h1>
+                <p>Upload a CV and job details to generate AI-powered interview questions.</p>
+            </div>
+            <div class="form-container">
+                <form id="cvForm">
+                    <div class="mb-3">
+                        <label for="cv" class="form-label required">Upload CV (PDF)</label>
+                        <input type="file" class="form-control" id="cv" name="cv" accept=".pdf">
+                        <div class="error-message" id="cvError">Please select a PDF file.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="candidate_type" class="form-label">Candidate Type</label>
+                        <select class="form-select" id="candidate_type" name="candidate_type">
+                            <option value="experienced">Experienced</option>
+                            <option value="junior">Junior</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="job_role" class="form-label">Job Role</label>
+                        <select class="form-select" id="job_role" name="job_role">
+                            <option value="mern">MERN Developer</option>
+                            <option value="python">Python Developer</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="job_description" class="form-label required">Job Description</label>
+                        <textarea class="form-control" id="job_description" name="job_description" rows="4">Seeking a senior MERN developer with expertise in building scalable RESTful APIs, optimizing MongoDB queries, and implementing secure authentication systems.</textarea>
+                        <div class="error-message" id="jobDescriptionError">Please provide a job description.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Generate Questions</button>
+                    <div class="loading" id="loading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span>Processing your CV...</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="chat-container" id="chatContainer">
+                <div class="chat-header">Generated Interview Questions</div>
+                <div class="bot-message">Welcome! I'm your AI Interview Assistant. Upload a CV and provide job details to receive tailored interview questions.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (loaded first) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log('jQuery loaded, DOM ready');
+            if ($('#chatContainer').length === 0) {
+                console.error('chatContainer not found in DOM');
+            } else {
+                console.log('chatContainer found:', $('#chatContainer'));
+            }
+
+            $('#cvForm').on('submit', function(e) {
+                e.preventDefault();
+                console.log('Form submitted, validating...');
+
+                let isValid = true;
+                $('#cvError').hide();
+                $('#jobDescriptionError').hide();
+
+                if (!$('#cv').val()) {
+                    $('#cvError').show();
+                    isValid = false;
+                }
+                if (!$('#job_description').val().trim()) {
+                    $('#jobDescriptionError').show();
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    console.log('Validation failed');
+                    return;
+                }
+
+                console.log('Validation passed, sending AJAX...');
+                $('#loading').show();
+                if ($('#chatContainer').length) {
+                    $('#chatContainer').append('<div class="bot-message bot-typing">Generating questions<span class="typing-dots"></span></div>');
+                    $('#chatContainer')[0].scrollTop = $('#chatContainer')[0].scrollHeight;
+                } else {
+                    console.error('Cannot append to chatContainer: element not found');
+                }
+
+                let formData = new FormData(this);
+                $.ajax({
+                    url: '/upload_cv',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log('AJAX success:', response);
+                        $('#loading').hide();
+                        $('.bot-typing').remove();
+                        let questions = response.questions || [];
+                        if (questions.length === 0) {
+                            console.log('No questions received');
+                            if ($('#chatContainer').length) {
+                                $('#chatContainer').append('<div class="bot-message">Sorry, no questions could be generated. Please verify your inputs and try again.</div>');
+                                $('#chatContainer')[0].scrollTop = $('#chatContainer')[0].scrollHeight;
+                            }
+                        } else {
+                            typeQuestionsSequentially(questions, 0);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('AJAX error:', status, error);
+                        $('#loading').hide();
+                        $('.bot-typing').remove();
+                        if ($('#chatContainer').length) {
+                            $('#chatContainer').append('<div class="bot-message">An error occurred while generating questions. Please try again later.</div>');
+                            $('#chatContainer')[0].scrollTop = $('#chatContainer')[0].scrollHeight;
+                        }
+                    }
+                });
+            });
+
+            function typeQuestionsSequentially(questions, index) {
+                if (index >= questions.length) {
+                    if ($('#chatContainer').length) {
+                        $('#chatContainer')[0].scrollTop = $('#chatContainer')[0].scrollHeight;
+                    }
+                    return;
+                }
+
+                let messageDiv = $(`<div class="bot-message">${index + 1}. </div>`);
+                if ($('#chatContainer').length) {
+                    $('#chatContainer').append(messageDiv);
+                    typeWriter(messageDiv, questions[index], 40, () => {
+                        $('#chatContainer')[0].scrollTop = $('#chatContainer')[0].scrollHeight;
+                        typeQuestionsSequentially(questions, index + 1);
+                    });
+                }
+            }
+
+            function typeWriter(element, text, speed, callback) {
+                let i = 0;
+                function type() {
+                    if (i < text.length) {
+                        element.append(text.charAt(i));
+                        i++;
+                        setTimeout(type, speed);
+                    } else if (callback) {
+                        callback();
+                    }
+                }
+                type();
+            }
+        });
+    </script>
+</body>
+</html>
