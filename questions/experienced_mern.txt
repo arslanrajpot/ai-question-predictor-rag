@@ -1,0 +1,10 @@
+Can you describe a large-scale MERN project you led and the challenges you faced?
+How do you optimize React applications for performance at scale?
+What strategies do you use to secure Node.js APIs in production?
+Have you implemented GraphQL with a MERN stack? If so, explain your approach.
+How do you handle database schema changes in MongoDB for live applications?
+What experience do you have with microservices in a MERN stack environment?
+Can you explain your approach to state management in complex React applications?
+How do you ensure high availability in a Node.js-based backend?
+Describe a time you resolved a critical bug in a MERN application under tight deadlines.
+What tools do you use for monitoring and debugging Express.js applications in production?

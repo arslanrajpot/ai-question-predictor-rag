@@ -1,0 +1,10 @@
+Can you describe a complex Python project you architected and its technical challenges?
+How do you optimize Python code for high-performance applications?
+What experience do you have with deploying Python-based microservices?
+Can you explain your approach to building scalable APIs with Django or Flask?
+Have you used Python for machine learning projects? If so, describe one.
+How do you handle concurrency in Python applications?
+What strategies do you use to secure Python web applications in production?
+Describe a time you optimized a slow database query in a Python project.
+How do you implement testing frameworks for Python applications?
+Can you share an experience where you resolved a critical production issue in a Python system?
