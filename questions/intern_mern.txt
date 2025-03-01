@@ -1,0 +1,10 @@
+What is your experience with React and Node.js?
+Can you explain the MERN stack architecture?
+How do you handle state management in React?
+Describe a project where you used MongoDB.
+What are your debugging strategies for Express.js applications?
+What is the purpose of useState and useEffect in React?
+How do you create a simple REST API with Node.js?
+Can you explain what a component is in React?
+Have you used any JavaScript libraries for frontend development?
+What steps do you take to test a MERN application before deployment?

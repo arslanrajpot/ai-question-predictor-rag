@@ -1,0 +1,10 @@
+What is your experience with Python programming?
+Can you explain how Python handles memory management?
+Describe a project where you used Django or Flask.
+How do you optimize Python code for performance?
+What are your testing strategies for Python applications?
+What is the difference between a list and a tuple in Python?
+How do you connect a Python application to a database?
+Can you explain what a Python decorator is?
+Have you used any Python libraries like Requests or BeautifulSoup?
+What steps do you take to debug a Python script?
