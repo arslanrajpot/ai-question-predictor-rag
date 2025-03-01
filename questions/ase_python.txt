@@ -1,0 +1,10 @@
+What is your experience with Python for web development?
+Can you explain how you’ve used Django or Flask in a project?
+How do you write unit tests for Python applications?
+Describe a Python project where you interacted with a database.
+What debugging tools do you use for Python code?
+How do you handle exceptions in Python applications?
+Can you share an experience where you optimized Python code?
+What is your approach to structuring a Python project for maintainability?
+Have you used any Python libraries like Pandas or NumPy? If so, describe your experience.
+How do you ensure your Python APIs are secure?
