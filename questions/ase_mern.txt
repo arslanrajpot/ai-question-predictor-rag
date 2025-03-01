@@ -1,0 +1,10 @@
+What is your experience building web applications with React and Node.js?
+Can you explain how you’ve used Express.js to create RESTful APIs?
+How do you manage state in a React application?
+Have you worked with MongoDB? Describe a project where you used it.
+What debugging techniques do you use for JavaScript applications?
+How do you ensure your React components are reusable?
+Can you describe a time you fixed a bug in a MERN application?
+What is your approach to writing clean and maintainable Node.js code?
+How do you handle API errors in a MERN stack project?
+Have you used any frontend libraries like Redux? If so, explain your experience.
