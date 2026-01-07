@@ -1,21 +1,21 @@
-import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 import logging
 import re
+from google import genai
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GEMINI_API_KEY")
-genai.configure(api_key=GOOGLE_API_KEY)
 
 class QuestionMatcher:
-    def __init__(self, vector_store, embedder, generative_model='models/gemini-1.5-flash'):
+    def __init__(self, vector_store, embedder, generative_model='models/gemini-2.0-flash'):
         self.vector_store = vector_store
         self.embedder = embedder
-        self.generative_model = genai.GenerativeModel(generative_model)
+        self.generative_model = generative_model
+        self.client = genai.Client(api_key=GOOGLE_API_KEY)
         self.current_type_role = None
 
     def chunk_cv(self, cv_text, max_chunk_size=500):
@@ -138,10 +138,14 @@ class QuestionMatcher:
                 f"Return exactly {len(questions)} refined questions as a numbered list (e.g., '1. Question text')."
             )
             logger.info(f"Refining questions with prompt: {prompt[:200]}...")
-            response = self.generative_model.generate_content(prompt)
-            logger.info(f"Gemini raw response for refinement: {response.text[:200]}...")
+            response = self.client.models.generate_content(
+                model=self.generative_model,
+                contents=prompt,
+            )
+            response_text = response.text or ""
+            logger.info(f"Gemini raw response for refinement: {response_text[:200]}...")
             refined = []
-            for line in response.text.split('\n'):
+            for line in response_text.split('\n'):
                 line = line.strip()
                 if line and re.match(r'^\d+\.\s+', line):
                     question = re.sub(r'^\d+\.\s+', '', line)
